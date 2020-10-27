@@ -3,6 +3,4 @@
   ~ SPDX-License-Identifier: GPL-3.0-only
   -->
 
-<resources>
-    <string name="app_theme_def" translatable="false">follow_system</string>
-</resources>
+<resources></resources>

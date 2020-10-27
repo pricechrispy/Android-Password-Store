@@ -3,6 +3,4 @@
   ~ SPDX-License-Identifier: GPL-3.0-only
   -->
 
-<resources>
-    <color name="navigation_bar_color">@color/primary_color</color>
-</resources>
+<resources></resources>

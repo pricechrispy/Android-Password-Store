@@ -3,15 +3,4 @@
   ~ SPDX-License-Identifier: GPL-3.0-only
   -->
 
-<resources>
-    <string-array name="app_theme_options">
-        <item>@string/theme_light</item>
-        <item>@string/theme_dark</item>
-        <item>@string/theme_follow_system</item>
-    </string-array>
-    <string-array name="app_theme_values">
-        <item>light</item>
-        <item>dark</item>
-        <item>follow_system</item>
-    </string-array>
-</resources>
+<resources></resources>
