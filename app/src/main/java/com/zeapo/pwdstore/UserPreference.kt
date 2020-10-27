@@ -50,8 +50,8 @@ import com.zeapo.pwdstore.sshkeygen.ShowSshKeyFragment
 import com.zeapo.pwdstore.sshkeygen.SshKeyGenActivity
 import com.zeapo.pwdstore.ui.proxy.ProxySelectorActivity
 import com.zeapo.pwdstore.utils.BiometricAuthenticator
-import com.zeapo.pwdstore.utils.PasswordRepository
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.PasswordRepository
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.autofillManager
 import com.zeapo.pwdstore.utils.getEncryptedGitPrefs
 import com.zeapo.pwdstore.utils.getString

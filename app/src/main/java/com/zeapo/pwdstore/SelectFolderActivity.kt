@@ -10,7 +10,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
-import com.zeapo.pwdstore.utils.PasswordRepository
+import dev.msfjarvis.aps.PasswordRepository
 
 
 class SelectFolderActivity : AppCompatActivity(R.layout.select_folder_layout) {

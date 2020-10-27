@@ -13,7 +13,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.zeapo.pwdstore.R
 import com.zeapo.pwdstore.git.config.AuthMode
 import com.zeapo.pwdstore.git.sshj.InteractivePasswordFinder
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.getEncryptedGitPrefs
 import com.zeapo.pwdstore.utils.requestInputFocusOnView
 import kotlin.coroutines.Continuation

@@ -1,0 +1,13 @@
+<!--
+  ~ Copyright © 2014-2020 The Android Password Store Authors. All Rights Reserved.
+  ~ SPDX-License-Identifier: GPL-3.0-only
+  -->
+
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_compat_margin">16dp</dimen>
+    <dimen name="normal_margin">8dp</dimen>
+    <dimen name="bottom_sheet_item_height">56dp</dimen>
+</resources>

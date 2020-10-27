@@ -16,8 +16,8 @@ import androidx.lifecycle.lifecycleScope
 import com.zeapo.pwdstore.R
 import com.zeapo.pwdstore.crypto.GetKeyIdsActivity
 import com.zeapo.pwdstore.databinding.FragmentKeySelectionBinding
-import com.zeapo.pwdstore.utils.PasswordRepository
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.PasswordRepository
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.commitChange
 import com.zeapo.pwdstore.utils.finish
 import com.zeapo.pwdstore.utils.sharedPrefs

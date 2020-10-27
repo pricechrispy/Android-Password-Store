@@ -16,7 +16,7 @@ import com.github.michaelbull.result.runCatching
 import com.zeapo.pwdstore.git.config.GitSettings
 import com.zeapo.pwdstore.git.config.Protocol
 import com.zeapo.pwdstore.git.sshj.SshKey
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.getString
 import com.zeapo.pwdstore.utils.sharedPrefs
 import java.io.File

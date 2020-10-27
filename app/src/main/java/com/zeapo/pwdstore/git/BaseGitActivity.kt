@@ -21,7 +21,7 @@ import com.zeapo.pwdstore.git.operation.PushOperation
 import com.zeapo.pwdstore.git.operation.ResetToRemoteOperation
 import com.zeapo.pwdstore.git.operation.SyncOperation
 import com.zeapo.pwdstore.git.sshj.ContinuationContainerActivity
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.getEncryptedGitPrefs
 import com.zeapo.pwdstore.utils.sharedPrefs
 import kotlinx.coroutines.Dispatchers

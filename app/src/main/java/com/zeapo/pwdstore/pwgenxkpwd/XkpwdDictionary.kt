@@ -6,7 +6,7 @@ package com.zeapo.pwdstore.pwgenxkpwd
 
 import android.content.Context
 import com.zeapo.pwdstore.R
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.getString
 import com.zeapo.pwdstore.utils.sharedPrefs
 import java.io.File

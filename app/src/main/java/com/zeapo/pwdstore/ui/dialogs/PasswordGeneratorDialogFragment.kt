@@ -25,7 +25,7 @@ import com.zeapo.pwdstore.pwgen.PasswordGenerator
 import com.zeapo.pwdstore.pwgen.PasswordGenerator.generate
 import com.zeapo.pwdstore.pwgen.PasswordGenerator.setPrefs
 import com.zeapo.pwdstore.pwgen.PasswordOption
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 
 class PasswordGeneratorDialogFragment : DialogFragment() {
 

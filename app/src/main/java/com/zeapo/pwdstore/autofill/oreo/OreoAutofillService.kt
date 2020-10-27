@@ -4,6 +4,7 @@
  */
 package com.zeapo.pwdstore.autofill.oreo
 
+import dev.msfjarvis.aps.autofill.oreo.AutofillResponseBuilder
 import android.content.Context
 import android.os.Build
 import android.os.CancellationSignal
@@ -25,13 +26,10 @@ import com.github.androidpasswordstore.autofillparser.cachePublicSuffixList
 import com.github.androidpasswordstore.autofillparser.passwordValue
 import com.github.androidpasswordstore.autofillparser.recoverNodes
 import com.github.androidpasswordstore.autofillparser.usernameValue
-import com.zeapo.pwdstore.BuildConfig
 import com.zeapo.pwdstore.R
-import com.zeapo.pwdstore.autofill.oreo.ui.AutofillSaveActivity
-import com.zeapo.pwdstore.utils.PreferenceKeys
-import com.zeapo.pwdstore.utils.getString
+import dev.msfjarvis.aps.autofill.oreo.ui.AutofillSaveActivity
+import dev.msfjarvis.aps.utils.getCustomSuffixes
 import com.zeapo.pwdstore.utils.hasFlag
-import com.zeapo.pwdstore.utils.sharedPrefs
 
 @RequiresApi(Build.VERSION_CODES.O)
 class OreoAutofillService : AutofillService() {
@@ -126,13 +124,4 @@ class OreoAutofillService : AutofillService() {
             )
         )
     }
-}
-
-fun Context.getDefaultUsername() = sharedPrefs.getString(PreferenceKeys.OREO_AUTOFILL_DEFAULT_USERNAME)
-
-fun Context.getCustomSuffixes(): Sequence<String> {
-    return sharedPrefs.getString(PreferenceKeys.OREO_AUTOFILL_CUSTOM_PUBLIC_SUFFIXES)
-        ?.splitToSequence('\n')
-        ?.filter { it.isNotBlank() && it.first() != '.' && it.last() != '.' }
-        ?: emptySequence()
 }

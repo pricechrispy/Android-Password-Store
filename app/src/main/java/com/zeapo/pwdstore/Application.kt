@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import com.github.ajalt.timberkt.Timber.DebugTree
 import com.github.ajalt.timberkt.Timber.plant
 import com.zeapo.pwdstore.git.sshj.setUpBouncyCastleForSshj
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.ProxyUtils
 import com.zeapo.pwdstore.utils.getString
 import com.zeapo.pwdstore.utils.sharedPrefs

@@ -7,7 +7,7 @@ package com.zeapo.pwdstore.pwgen
 import android.content.Context
 import androidx.core.content.edit
 import com.zeapo.pwdstore.R
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.clearFlag
 import com.zeapo.pwdstore.utils.hasFlag
 

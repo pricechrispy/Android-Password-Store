@@ -33,10 +33,10 @@ import com.zeapo.pwdstore.ui.OnOffItemAnimator
 import com.zeapo.pwdstore.ui.adapters.PasswordItemRecyclerAdapter
 import com.zeapo.pwdstore.ui.dialogs.BasicBottomSheet
 import com.zeapo.pwdstore.ui.dialogs.ItemCreationBottomSheet
-import com.zeapo.pwdstore.utils.PasswordItem
-import com.zeapo.pwdstore.utils.PasswordRepository
-import com.zeapo.pwdstore.utils.PasswordSortOrder
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PasswordItem
+import dev.msfjarvis.aps.PasswordRepository
+import dev.msfjarvis.aps.utils.PasswordSortOrder
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.base64
 import com.zeapo.pwdstore.utils.getString
 import com.zeapo.pwdstore.utils.sharedPrefs

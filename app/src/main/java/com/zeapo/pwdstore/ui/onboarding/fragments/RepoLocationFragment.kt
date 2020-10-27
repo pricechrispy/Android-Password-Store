@@ -21,9 +21,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zeapo.pwdstore.R
 import com.zeapo.pwdstore.UserPreference
 import com.zeapo.pwdstore.databinding.FragmentRepoLocationBinding
-import com.zeapo.pwdstore.utils.PasswordRepository
-import com.zeapo.pwdstore.utils.PasswordSortOrder
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.PasswordRepository
+import dev.msfjarvis.aps.utils.PasswordSortOrder
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.finish
 import com.zeapo.pwdstore.utils.getString
 import com.zeapo.pwdstore.utils.isPermissionGranted

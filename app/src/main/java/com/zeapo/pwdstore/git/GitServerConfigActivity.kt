@@ -26,7 +26,7 @@ import com.zeapo.pwdstore.git.config.AuthMode
 import com.zeapo.pwdstore.git.config.GitSettings
 import com.zeapo.pwdstore.git.config.Protocol
 import com.zeapo.pwdstore.ui.dialogs.BasicBottomSheet
-import com.zeapo.pwdstore.utils.PasswordRepository
+import dev.msfjarvis.aps.PasswordRepository
 import com.zeapo.pwdstore.utils.snackbar
 import com.zeapo.pwdstore.utils.viewBinding
 import kotlinx.coroutines.Dispatchers

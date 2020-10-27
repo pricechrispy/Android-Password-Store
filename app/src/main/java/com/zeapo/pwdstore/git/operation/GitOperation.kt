@@ -24,7 +24,7 @@ import com.zeapo.pwdstore.git.sshj.SshAuthMethod
 import com.zeapo.pwdstore.git.sshj.SshKey
 import com.zeapo.pwdstore.git.sshj.SshjSessionFactory
 import com.zeapo.pwdstore.utils.BiometricAuthenticator
-import com.zeapo.pwdstore.utils.PasswordRepository
+import dev.msfjarvis.aps.PasswordRepository
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlinx.coroutines.Dispatchers

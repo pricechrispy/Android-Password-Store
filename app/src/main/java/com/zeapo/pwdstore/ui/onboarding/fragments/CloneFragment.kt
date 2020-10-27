@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
 import com.zeapo.pwdstore.R
 import com.zeapo.pwdstore.databinding.FragmentCloneBinding
 import com.zeapo.pwdstore.git.GitServerConfigActivity
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.finish
 import com.zeapo.pwdstore.utils.performTransactionWithBackStack
 import com.zeapo.pwdstore.utils.sharedPrefs

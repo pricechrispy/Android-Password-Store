@@ -10,7 +10,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.core.content.edit
 import com.github.ajalt.timberkt.d
 import com.zeapo.pwdstore.utils.OPENPGP_PROVIDER
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.sharedPrefs
 import java.io.Closeable
 import java.security.PublicKey

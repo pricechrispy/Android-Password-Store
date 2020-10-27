@@ -38,7 +38,7 @@ import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.runCatching
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
-import com.zeapo.pwdstore.autofill.oreo.AutofillMatcher
+import dev.msfjarvis.aps.autofill.oreo.AutofillMatcher
 import com.zeapo.pwdstore.crypto.BasePgpActivity.Companion.getLongName
 import com.zeapo.pwdstore.crypto.DecryptActivity
 import com.zeapo.pwdstore.crypto.PasswordCreationActivity
@@ -48,9 +48,9 @@ import com.zeapo.pwdstore.git.config.GitSettings
 import com.zeapo.pwdstore.ui.dialogs.BasicBottomSheet
 import com.zeapo.pwdstore.ui.dialogs.FolderCreationDialogFragment
 import com.zeapo.pwdstore.ui.onboarding.activity.OnboardingActivity
-import com.zeapo.pwdstore.utils.PasswordItem
-import com.zeapo.pwdstore.utils.PasswordRepository
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PasswordItem
+import dev.msfjarvis.aps.PasswordRepository
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.base64
 import com.zeapo.pwdstore.utils.commitChange
 import com.zeapo.pwdstore.utils.contains

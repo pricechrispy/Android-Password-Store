@@ -4,6 +4,7 @@
  */
 package com.zeapo.pwdstore.utils
 
+import dev.msfjarvis.aps.PasswordRepository
 import com.github.michaelbull.result.getOrElse
 import com.github.michaelbull.result.runCatching
 import java.io.File

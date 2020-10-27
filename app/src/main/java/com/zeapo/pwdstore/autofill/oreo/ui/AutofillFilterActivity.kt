@@ -11,16 +11,10 @@ import android.content.Intent
 import android.content.IntentSender
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.autofill.AutofillManager
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.bold
-import androidx.core.text.buildSpannedString
-import androidx.core.text.underline
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.ajalt.timberkt.e
@@ -31,11 +25,19 @@ import com.zeapo.pwdstore.R
 import com.zeapo.pwdstore.SearchMode
 import com.zeapo.pwdstore.SearchableRepositoryAdapter
 import com.zeapo.pwdstore.SearchableRepositoryViewModel
-import com.zeapo.pwdstore.autofill.oreo.AutofillMatcher
-import com.zeapo.pwdstore.autofill.oreo.AutofillPreferences
-import com.zeapo.pwdstore.autofill.oreo.DirectoryStructure
+import dev.msfjarvis.aps.autofill.oreo.AutofillMatcher
+import dev.msfjarvis.aps.autofill.oreo.AutofillPreferences
+import dev.msfjarvis.aps.autofill.oreo.DirectoryStructure
+import dev.msfjarvis.aps.autofill.oreo.ui.AutofillDecryptActivity
+import dev.msfjarvis.aps.autofill.oreo.ui.PasswordViewHolder
+import dev.msfjarvis.aps.utils.PasswordItem
+import android.view.View
+import android.widget.TextView
+import androidx.core.text.bold
+import androidx.core.text.buildSpannedString
+import androidx.core.text.underline
+import androidx.core.widget.addTextChangedListener
 import com.zeapo.pwdstore.databinding.ActivityOreoAutofillFilterBinding
-import com.zeapo.pwdstore.utils.PasswordItem
 import com.zeapo.pwdstore.utils.viewBinding
 
 @TargetApi(Build.VERSION_CODES.O)
@@ -47,9 +49,9 @@ class AutofillFilterView : AppCompatActivity() {
         private const val WIDTH_PERCENTAGE = 0.75
 
         private const val EXTRA_FORM_ORIGIN_WEB =
-            "com.zeapo.pwdstore.autofill.oreo.ui.EXTRA_FORM_ORIGIN_WEB"
+            "dev.msfjarvis.aps.autofill.oreo.ui.EXTRA_FORM_ORIGIN_WEB"
         private const val EXTRA_FORM_ORIGIN_APP =
-            "com.zeapo.pwdstore.autofill.oreo.ui.EXTRA_FORM_ORIGIN_APP"
+            "dev.msfjarvis.aps.autofill.oreo.ui.EXTRA_FORM_ORIGIN_APP"
         private var matchAndDecryptFileRequestCode = 1
 
         fun makeMatchAndDecryptFileIntentSender(

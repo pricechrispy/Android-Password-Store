@@ -22,7 +22,7 @@ import com.github.michaelbull.result.getOrElse
 import com.github.michaelbull.result.runCatching
 import com.zeapo.pwdstore.Application
 import com.zeapo.pwdstore.R
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.getEncryptedGitPrefs
 import com.zeapo.pwdstore.utils.getString
 import com.zeapo.pwdstore.utils.sharedPrefs

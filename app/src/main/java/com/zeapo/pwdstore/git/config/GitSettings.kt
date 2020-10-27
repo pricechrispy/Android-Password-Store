@@ -8,8 +8,8 @@ import androidx.core.content.edit
 import com.github.michaelbull.result.getOrElse
 import com.github.michaelbull.result.runCatching
 import com.zeapo.pwdstore.Application
-import com.zeapo.pwdstore.utils.PasswordRepository
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.PasswordRepository
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.getEncryptedGitPrefs
 import com.zeapo.pwdstore.utils.getEncryptedProxyPrefs
 import com.zeapo.pwdstore.utils.getString

@@ -22,7 +22,7 @@ import com.zeapo.pwdstore.R
 import com.zeapo.pwdstore.databinding.ActivityGitConfigBinding
 import com.zeapo.pwdstore.git.config.GitSettings
 import com.zeapo.pwdstore.git.log.GitLogActivity
-import com.zeapo.pwdstore.utils.PasswordRepository
+import dev.msfjarvis.aps.PasswordRepository
 import com.zeapo.pwdstore.utils.viewBinding
 import kotlinx.coroutines.launch
 import org.eclipse.jgit.lib.Constants

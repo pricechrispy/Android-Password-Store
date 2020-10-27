@@ -113,7 +113,7 @@
             android:label="@string/pref_ssh_keygen_title"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".autofill.oreo.ui.AutofillDecryptActivity"
+            android:name="dev.msfjarvis.aps.autofill.oreo.ui.AutofillDecryptActivity"
             android:theme="@style/NoBackgroundTheme" />
         <activity
             android:name=".autofill.oreo.ui.AutofillFilterView"
@@ -121,7 +121,7 @@
             android:theme="@style/DialogLikeTheme"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".autofill.oreo.ui.AutofillSaveActivity"
+            android:name="dev.msfjarvis.aps.autofill.oreo.ui.AutofillSaveActivity"
             android:theme="@style/NoBackgroundTheme" />
         <activity
             android:name=".autofill.oreo.ui.AutofillSmsActivity"
@@ -129,7 +129,7 @@
             android:theme="@style/DialogLikeTheme"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".autofill.oreo.ui.AutofillPublisherChangedActivity"
+            android:name="dev.msfjarvis.aps.autofill.oreo.ui.AutofillPublisherChangedActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/DialogLikeTheme"
             android:windowSoftInputMode="adjustNothing" />

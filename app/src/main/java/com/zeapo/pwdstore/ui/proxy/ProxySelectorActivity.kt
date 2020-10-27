@@ -16,7 +16,7 @@ import androidx.core.widget.doOnTextChanged
 import com.zeapo.pwdstore.R
 import com.zeapo.pwdstore.databinding.ActivityProxySelectorBinding
 import com.zeapo.pwdstore.git.config.GitSettings
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.ProxyUtils
 import com.zeapo.pwdstore.utils.getEncryptedProxyPrefs
 import com.zeapo.pwdstore.utils.getString

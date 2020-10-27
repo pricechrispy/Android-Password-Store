@@ -15,7 +15,7 @@ import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.runCatching
 import com.zeapo.pwdstore.databinding.PasswordRecyclerViewBinding
 import com.zeapo.pwdstore.ui.adapters.PasswordItemRecyclerAdapter
-import com.zeapo.pwdstore.utils.PasswordItem
+import dev.msfjarvis.aps.utils.PasswordItem
 import com.zeapo.pwdstore.utils.viewBinding
 import java.io.File
 import me.zhanghai.android.fastscroll.FastScrollerBuilder

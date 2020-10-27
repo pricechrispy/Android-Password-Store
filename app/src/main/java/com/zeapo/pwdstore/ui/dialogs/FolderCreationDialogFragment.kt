@@ -21,7 +21,7 @@ import com.zeapo.pwdstore.PasswordStore
 import com.zeapo.pwdstore.R
 import com.zeapo.pwdstore.crypto.BasePgpActivity
 import com.zeapo.pwdstore.crypto.GetKeyIdsActivity
-import com.zeapo.pwdstore.utils.PasswordRepository
+import dev.msfjarvis.aps.PasswordRepository
 import com.zeapo.pwdstore.utils.commitChange
 import com.zeapo.pwdstore.utils.requestInputFocusOnView
 import java.io.File

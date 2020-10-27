@@ -11,7 +11,7 @@ import android.content.Context
 import androidx.core.content.edit
 import com.zeapo.pwdstore.git.config.AuthMode
 import com.zeapo.pwdstore.git.config.Protocol
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.getString
 import com.zeapo.pwdstore.utils.sharedPrefs
 import org.junit.Assert.assertEquals

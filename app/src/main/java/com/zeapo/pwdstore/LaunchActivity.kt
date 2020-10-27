@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import com.zeapo.pwdstore.crypto.DecryptActivity
 import com.zeapo.pwdstore.utils.BiometricAuthenticator
-import com.zeapo.pwdstore.utils.PreferenceKeys
+import dev.msfjarvis.aps.utils.PreferenceKeys
 import com.zeapo.pwdstore.utils.sharedPrefs
 
 class LaunchActivity : AppCompatActivity() {

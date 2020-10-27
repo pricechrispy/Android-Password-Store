@@ -8,7 +8,7 @@ package com.zeapo.pwdstore.git.log
 import com.github.ajalt.timberkt.e
 import com.github.michaelbull.result.getOrElse
 import com.github.michaelbull.result.runCatching
-import com.zeapo.pwdstore.utils.PasswordRepository
+import dev.msfjarvis.aps.PasswordRepository
 import com.zeapo.pwdstore.utils.hash
 import com.zeapo.pwdstore.utils.time
 import org.eclipse.jgit.api.Git

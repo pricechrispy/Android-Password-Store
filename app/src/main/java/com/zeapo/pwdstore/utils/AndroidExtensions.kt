@@ -5,6 +5,7 @@
 
 package com.zeapo.pwdstore.utils
 
+import dev.msfjarvis.aps.PasswordRepository
 import android.app.KeyguardManager
 import android.content.ClipboardManager
 import android.content.Context

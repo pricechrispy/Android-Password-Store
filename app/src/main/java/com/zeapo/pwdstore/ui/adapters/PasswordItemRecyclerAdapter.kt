@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zeapo.pwdstore.R
 import com.zeapo.pwdstore.SearchableRepositoryAdapter
 import com.zeapo.pwdstore.stableId
-import com.zeapo.pwdstore.utils.PasswordItem
+import dev.msfjarvis.aps.utils.PasswordItem
 
 open class PasswordItemRecyclerAdapter :
     SearchableRepositoryAdapter<PasswordItemRecyclerAdapter.PasswordItemViewHolder>(
