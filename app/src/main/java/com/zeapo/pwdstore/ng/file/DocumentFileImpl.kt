@@ -6,9 +6,7 @@ import java.io.FileNotFoundException
 import java.io.InputStream
 import java.io.OutputStream
 
-class DocumentFileImpl(private val file: DocumentFile) : PasswordFile() {
-
-    private lateinit var context: Context
+class DocumentFileImpl(private val context: Context, private val file: DocumentFile) : PasswordFile() {
 
     override val absolutePath: String
         get() = file.uri.path!!
@@ -22,11 +20,12 @@ class DocumentFileImpl(private val file: DocumentFile) : PasswordFile() {
     override val lastModified: Long
         get() = file.lastModified()
 
+    // Returns empty string in case file name is null. Mocking java.io.File behaviour.
     override val name: String
-        get() = TODO("Not yet implemented")
+        get() = file.name ?: ""
 
     override val nameWithoutExtension: String
-        get() = TODO("Not yet implemented")
+        get() = name.substringBeforeLast(".") ?: ""
 
 
     override fun openInputStream(): InputStream? {
@@ -43,5 +42,12 @@ class DocumentFileImpl(private val file: DocumentFile) : PasswordFile() {
         } catch (e: FileNotFoundException) {
             null
         }
+    }
+
+    override fun listFiles(filter: (PasswordFile) -> Boolean): List<PasswordFile> {
+        if (!file.isDirectory) return emptyList()
+        val filesList = file.listFiles()
+
+        return filesList.map { getPasswordFile(context, it) }.filter(filter)
     }
 }

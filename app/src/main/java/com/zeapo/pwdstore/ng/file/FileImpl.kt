@@ -1,19 +1,17 @@
 package com.zeapo.pwdstore.ng.file
 
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.InputStream
 import java.io.OutputStream
-import java.net.URI
 
-class FileImpl() : PasswordFile() {
-
-    private lateinit var file: File
+class FileImpl(private val file: File) : PasswordFile() {
 
     override val absolutePath: String
         get() = file.absolutePath
 
     override val canonicalPath: String
-        get() = TODO("Not yet implemented")
+        get() = file.canonicalPath
 
     override val fileType: PasswordFileType
         get() = PasswordFileType.FILE
@@ -27,32 +25,26 @@ class FileImpl() : PasswordFile() {
     override val nameWithoutExtension: String
         get() = file.nameWithoutExtension
 
-    override fun openInputStream(): InputStream {
-        TODO("Not yet implemented")
+    override fun openInputStream(): InputStream? {
+        return try {
+            file.inputStream()
+        } catch (e: FileNotFoundException) {
+            null
+        }
     }
 
-    constructor(file: File) {
-        this.file = file
+    override fun openOutputStream(): OutputStream? {
+        return try {
+            file.outputStream()
+        } catch (e: FileNotFoundException) {
+            null
+        }
     }
 
-    constructor(pathname: String) {
-        this.file = File(pathname)
-    }
+    override fun listFiles(filter: (PasswordFile) -> Boolean): List<PasswordFile> {
+        if (!file.isDirectory) return emptyList()
+        val filesList = file.listFiles() ?: arrayOf()
 
-    constructor(uri: URI) {
-        this.file = File(uri)
-    }
-
-    constructor(parent: String?, child: String) {
-        this.file = File(parent, child)
-    }
-
-    constructor(parent: File?, child: String) {
-        this.file = File(parent, child)
-    }
-
-
-    override fun openOutputStream(): OutputStream {
-        TODO("Not yet implemented")
+        return filesList.map { getPasswordFile(it) }.filter(filter)
     }
 }
