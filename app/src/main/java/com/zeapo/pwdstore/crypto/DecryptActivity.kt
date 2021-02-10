@@ -153,6 +153,10 @@ class DecryptActivity : BasePgpActivity(), OpenPgpServiceConnection.OnBound {
 
     @OptIn(ExperimentalTime::class)
     private fun decryptAndVerify(receivedIntent: Intent? = null) {
+        if (this.repoPath.equals("OOPASS")) {
+            copyPasswordToClipboard(this.oopassData)
+            return
+        }
         if (api == null) {
             bindToOpenKeychain(this)
             return

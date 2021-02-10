@@ -69,13 +69,18 @@ class PasswordFragment : Fragment(R.layout.password_recycler_view) {
         super.onViewCreated(view, savedInstanceState)
         settings = requireContext().sharedPrefs
         initializePasswordList()
+
         binding.fab.setOnClickListener {
             ItemCreationBottomSheet().show(childFragmentManager, "BOTTOM_SHEET")
+        }
+        binding.buttonOopass.setOnClickListener{
+            ItemCreationBottomSheet.newInstance("oopass").show(childFragmentManager, "BOTTOM_SHEET")
         }
         childFragmentManager.setFragmentResultListener(ITEM_CREATION_REQUEST_KEY, viewLifecycleOwner) { _, bundle ->
             when (bundle.getString(ACTION_KEY)) {
                 ACTION_FOLDER -> requireStore().createFolder()
                 ACTION_PASSWORD -> requireStore().createPassword()
+                ACTION_OOPASS -> requireStore().getOopassMain(bundle.getString("_master_password").toString(), bundle.getString("_auth_user").toString(), bundle.getString("_auth_domain").toString())
             }
         }
     }
@@ -313,6 +318,7 @@ class PasswordFragment : Fragment(R.layout.password_recycler_view) {
         const val ACTION_KEY = "action"
         const val ACTION_FOLDER = "folder"
         const val ACTION_PASSWORD = "password"
+        const val ACTION_OOPASS = "oopass"
 
         fun newInstance(args: Bundle): PasswordFragment {
             val fragment = PasswordFragment()

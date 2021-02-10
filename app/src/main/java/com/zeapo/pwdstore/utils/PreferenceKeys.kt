@@ -86,4 +86,11 @@ object PreferenceKeys {
     const val PROXY_PORT = "proxy_port"
     const val PROXY_USERNAME = "proxy_username"
     const val PROXY_PASSWORD = "proxy_password"
+
+    const val OOPASS_API_KEY_EMAIL = "oopass_api_key_email"
+    const val OOPASS_SERVER_HOST = "oopass_server_host"
+    const val OOPASS_SERVER_PORT = "oopass_server_port"
+    const val OOPASS_REQUESTED_CHARS = "oopass_requested_chars"
+    const val OOPASS_REQUESTED_LENGTH = "oopass_requested_length"
+    const val OOPASS_HMAC_KEY = "oopass_hmac_key"
 }

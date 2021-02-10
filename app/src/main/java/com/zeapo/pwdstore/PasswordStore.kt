@@ -66,6 +66,31 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.eclipse.jgit.api.Git
+import com.koushikdutta.async.http.AsyncHttpClient
+import com.koushikdutta.async.http.AsyncHttpClient.WebSocketConnectCallback
+import com.koushikdutta.async.http.WebSocket
+import com.koushikdutta.async.http.WebSocket.StringCallback
+import com.koushikdutta.async.callback.DataCallback
+import com.koushikdutta.async.callback.CompletedCallback
+import com.koushikdutta.async.DataEmitter
+import com.koushikdutta.async.ByteBufferList
+import com.zeapo.pwdstore.crypto.ARC4
+import com.zeapo.pwdstore.crypto.prng
+import com.zeapo.pwdstore.crypto.seedrandom
+import java.math.BigInteger
+import java.security.SecureRandom
+import java.security.MessageDigest
+import java.util.Random
+import javax.crypto.Mac
+import javax.crypto.SecretKey
+import javax.crypto.spec.SecretKeySpec
+import kotlin.math.floor
+import kotlin.math.roundToInt
+import org.bouncycastle.asn1.sec.SECNamedCurves
+import org.bouncycastle.asn1.x9.X9ECParameters
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.bouncycastle.math.ec.ECPoint
+import org.bouncycastle.util.encoders.Hex
 
 const val PASSWORD_FRAGMENT_TAG = "PasswordsList"
 
@@ -499,6 +524,368 @@ class PasswordStore : BaseGitActivity() {
     fun createFolder() {
         if (!validateState()) return
         FolderCreationDialogFragment.newInstance(currentDir.path).show(supportFragmentManager, null)
+    }
+
+    fun getOopassMain(_master_password:String, _auth_user:String, _auth_domain:String) {
+        if(!validateState()) return
+
+        val _setting_api_key_email:String? = sharedPrefs.getString(PreferenceKeys.OOPASS_API_KEY_EMAIL)
+        val _setting_server_host:String? = sharedPrefs.getString(PreferenceKeys.OOPASS_SERVER_HOST)
+        val _setting_server_port:String? = sharedPrefs.getString(PreferenceKeys.OOPASS_SERVER_PORT)
+        val _setting_requested_chars:String? = sharedPrefs.getString(PreferenceKeys.OOPASS_REQUESTED_CHARS)
+        val _setting_requested_length:Int = sharedPrefs.getString(PreferenceKeys.OOPASS_REQUESTED_LENGTH)?.toIntOrNull() ?: 16
+        val _setting_hmac_key:String? = sharedPrefs.getString(PreferenceKeys.OOPASS_HMAC_KEY)
+
+        // initialize hmac key if not yet set for this device
+        if ( _setting_hmac_key == null || _setting_hmac_key.trim().length == 0 )
+        {
+            val random_seed:SecureRandom = SecureRandom()
+            val random_bytes:ByteArray = ByteArray(4)
+            random_seed.nextBytes(random_bytes)
+
+            val random_md5:MessageDigest = MessageDigest.getInstance("MD5")
+
+            val random_32bytes:ByteArray = random_md5.digest( random_bytes )
+
+            sharedPrefs.edit { putString(PreferenceKeys.OOPASS_HMAC_KEY, String(Hex.encode(random_32bytes))) }
+
+            MaterialAlertDialogBuilder(this@PasswordStore)
+                .setTitle("Notice: HMAC Key Generated")
+                .setMessage("An HMAC key was not yet set for your device and has been generated.\n\nYou may go to the settings to set another value for the HMAC key.")
+                //.setCancelable(true)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+        }
+
+        if ( _setting_api_key_email == null || _setting_api_key_email.trim().length == 0 )
+        {
+            MaterialAlertDialogBuilder(this@PasswordStore)
+                .setTitle("Error: Missing API Email")
+                .setMessage("Go to the settings to set a value for the API email")
+                //.setCancelable(true)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+
+            return
+        }
+
+        if ( _setting_server_host == null || _setting_server_host.trim().length == 0 )
+        {
+            MaterialAlertDialogBuilder(this@PasswordStore)
+                .setTitle("Error: Missing Server Host")
+                .setMessage("Go to the settings to set a value for the server host")
+                //.setCancelable(true)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+
+            return
+        }
+
+        if ( _setting_server_port == null || _setting_server_port.trim().length == 0 )
+        {
+            MaterialAlertDialogBuilder(this@PasswordStore)
+                .setTitle("Error: Missing Server Port")
+                .setMessage("Go to the settings to set a value for the server port")
+                //.setCancelable(true)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+
+            return
+        }
+
+        if ( _setting_requested_chars == null || _setting_requested_chars.trim().length == 0 )
+        {
+            MaterialAlertDialogBuilder(this@PasswordStore)
+                .setTitle("Error: Missing Desired Characters")
+                .setMessage("Go to the settings to set a value for the desired password characters")
+                //.setCancelable(true)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+
+            return
+        }
+
+        if ( _setting_requested_length < 1 )
+        {
+            MaterialAlertDialogBuilder(this@PasswordStore)
+                .setTitle("Error: Invalid Desired Length")
+                .setMessage("Go to the settings to set a value for the desired password length")
+                //.setCancelable(true)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+
+            return
+        }
+
+        val hmac_options_key:String? = sharedPrefs.getString(PreferenceKeys.OOPASS_HMAC_KEY)
+        val hmac_options_algorithm:String = "HmacSHA256"
+        val oprf_hmac_sha256_key:SecretKey = SecretKeySpec(hmac_options_key?.toByteArray(), hmac_options_algorithm)
+        val ec_options:X9ECParameters = SECNamedCurves.getByName("secp256k1")
+
+        var randomRho:BigInteger = BigInteger.ONE
+
+        val client_version:String = "1.1.2.android"
+        val protocol_version:String = "2.0.*"
+        var _socket:WebSocket? = null
+
+        val _auth_offset:Int = 0
+
+        val handle_socket_connect = object:WebSocketConnectCallback {
+            override fun onCompleted(ex:Exception?, webSocket:WebSocket) {
+                ex?.printStackTrace()
+                return
+            }
+        }
+
+        val handle_socket_closed_ended = object:CompletedCallback {
+            override fun onCompleted(ex:Exception?) {
+                ex?.printStackTrace()
+                return
+            }
+        }
+
+        val handle_socket_data_read = object:DataCallback {
+            override fun onDataAvailable(emitter:DataEmitter, byteBufferList:ByteBufferList) {
+                //println("onDataAvailable()")
+
+                // note that this data has been read
+                byteBufferList.recycle()
+            }
+        }
+
+        val handle_socket_received_beta = object:StringCallback {
+            override fun onStringAvailable(s: String) {
+                val data_array:List<String> = s.split(",")
+
+                if ( data_array.size.equals(2) )
+                {
+                    val beta_x_str:String = data_array.get(0)
+                    val beta_y_str:String = data_array.get(1)
+
+                    println("RECEIVED CURVE POINTS X,Y:'" + beta_x_str + "','" + beta_y_str + "'")
+
+                    val beta_x:BigInteger = BigInteger(1, Hex.decodeStrict(beta_x_str))
+                    val beta_y:BigInteger = BigInteger(1, Hex.decodeStrict(beta_y_str))
+
+                    val beta_point:ECPoint = ec_options.getCurve().createPoint(beta_x, beta_y)
+
+                    println("beta_point.affineX:Y::'" + beta_point.normalize().getXCoord().toString() + "':'" + beta_point.normalize().getYCoord().toString() + "'")
+
+                    val is_beta_point_member:Boolean = beta_point.isValid()
+
+                    if ( is_beta_point_member )
+                    {
+                        println("Point is a member of curve")
+
+                        // CANCEL OUT RANDOM LARGE VALUE IN BETA THAT WAS USED TO BLIND ALPHA
+
+                        // aka: rwd = H'(x)^k = (beta)^(1/rho)
+                        val rho_inv:BigInteger = randomRho.modInverse( ec_options.getN() )
+                        val rwd_point:ECPoint = beta_point.multiply( rho_inv )
+
+                        // GENERATE HMAC SHA256 OF RESULTING X,Y PAIR ON CURVE AND MASTER PASSWORD AS RESULT OF OPRF EXCHANGE
+
+                        //val rwd_x:ByteArray = rwd_point.normalize().getXCoord().toBigInteger().toByteArray()
+                        //val rwd_y:ByteArray = rwd_point.normalize().getYCoord().toBigInteger().toByteArray()
+                        val rwd_x:String = rwd_point.normalize().getXCoord().toString()
+                        val rwd_y:String = rwd_point.normalize().getYCoord().toString()
+
+                        //println("rwd_point.affineX:Y::'" + String(Hex.encode(rwd_x)) + "':'" + String(Hex.encode(rwd_y)) + "'")
+                        println("rwd_point.affineX:Y::'" + rwd_x + "':'" + rwd_y + "'")
+                        println("rwd_point.isOnCurve():'" + rwd_point.isValid().toString())
+
+                        //val rwd:String = String(Hex.encode(rwd_x)) + String(Hex.encode(rwd_y)) + _master_password
+                        val rwd:String = rwd_x + rwd_y + _master_password
+
+                        val rwd_hmac_sha256_key:SecretKey = SecretKeySpec(_auth_domain.toByteArray(), hmac_options_algorithm)
+                        val rwd_hmac_sha256:Mac = Mac.getInstance(hmac_options_algorithm, BouncyCastleProvider())
+
+                        rwd_hmac_sha256.init(rwd_hmac_sha256_key)
+                        rwd_hmac_sha256.update(rwd.toByteArray())
+
+                        val rwd_hmac_sha256_encrypted:ByteArray = rwd_hmac_sha256.doFinal()
+                        val hashed:String = String(Hex.encode(rwd_hmac_sha256_encrypted))
+
+                        println("Resolved Beta: '" + hashed + "'")
+
+                        // MAP RESULT TO CONFIGURABLE PASSWORD ALPHABET
+                        var seedrandom: ARC4 = seedrandom(hashed)
+
+                        var pass:String = ""
+
+                        for (i:Int in 0..(_setting_requested_length-1))
+                        {
+                            //println(prng(seedrandom))
+                            pass += _setting_requested_chars.get(floor(prng(seedrandom) * _setting_requested_chars.length).roundToInt())
+                        }
+
+                        // SAVE TO CLIPBOARD WITH TIMER TO CLEAR
+                        val decryptIntent = Intent(this@PasswordStore, DecryptActivity::class.java)
+                        decryptIntent.putExtra("NAME", "OOPASS: Copied to Clipboard")
+                        decryptIntent.putExtra("FILE_PATH", "OOPASS: Copied to Clipboard")
+                        decryptIntent.putExtra("REPO_PATH", "OOPASS")
+                        decryptIntent.putExtra("LAST_CHANGED_TIMESTAMP", "")
+                        decryptIntent.putExtra("OOPASS_DATA", pass)
+                        startActivity(decryptIntent)
+
+                        //runOnUiThread(object:Runnable{
+                        //    override fun run() {
+                        //        //(BasePgpActivity::copyPasswordToClipboard)(BasePgpActivity(), pass)
+                        //        (DecryptActivity::copyPasswordToClipboard)(DecryptActivity(), pass)
+                        //        //MaterialAlertDialogBuilder(this@PasswordStore)
+                        //        //    .setTitle("Your Password")
+                        //        //    .setMessage(pass)
+                        //        //    //.setCancelable(true)
+                        //        //    .setPositiveButton(android.R.string.ok, null)
+                        //        //    .show()
+                        //    }
+                        //})
+                    }
+                    else
+                    {
+                        println("Point is NOT a member of curve")
+                    }
+                }
+                else if ( s.equals("invalid") )
+                {
+                    println("Point SENT is NOT a member of curve")
+                }
+
+                println("Closing socket connection")
+                _socket?.close()
+
+                return
+            }
+        }
+
+        val handle_socket_data = object:StringCallback {
+            override fun onStringAvailable(s:String) {
+                //println("onStringAvailable(): '" + s + "'")
+
+                if ( s.equals("__protocol_" + protocol_version + "_connected__") )
+                {
+                    // replace string callback handler
+                    _socket?.setStringCallback(handle_socket_received_beta)
+
+                    // GENERATE USER HASH TO BE BLINDED AND SENT TO SERVER
+
+                    //generate hash( username+domain+ctr+password )
+                    var hashForOPRF:String = _auth_user + _auth_domain + _auth_offset + _master_password
+
+                    val oprf_hmac_sha256:Mac = Mac.getInstance(hmac_options_algorithm, BouncyCastleProvider())
+
+                    oprf_hmac_sha256.init(oprf_hmac_sha256_key)
+                    oprf_hmac_sha256.update(hashForOPRF.toByteArray())
+
+                    val oprf_hmac_sha256_encrypted:ByteArray = oprf_hmac_sha256.doFinal()
+                    hashForOPRF = String(Hex.encode(oprf_hmac_sha256_encrypted))
+
+                    // GENERATE RANDOM LARGE VALUE FOR USE IN BLINDING OUR USER HASH
+
+                    //ensure binary length >= (256+80=336 bits) 42bytes of entropy or more
+                    val random_seed:SecureRandom = SecureRandom()
+                    val random_bytes:ByteArray = ByteArray(43)
+                    random_seed.nextBytes(random_bytes)
+
+                    randomRho = BigInteger(random_bytes)
+
+                    println("randomRho:bitlength::'" + randomRho + "':'" + randomRho.bitLength() + "'")
+
+                    // GENERATE BLINDED ALPHA
+
+                    // generate alpha = (hashForAlpha)^randomRho
+                    // aka: alpha=H'(x)^rho
+                    // power represented as point multiplication on the curve
+
+                    val hash_bigi:BigInteger = BigInteger(1, Hex.decodeStrict(hashForOPRF))
+
+                    println("hashForOPRF:bigi::'" + hashForOPRF + "':'" + hash_bigi + "'")
+
+                    // get x,y pair on curve using user hmac as X
+                    // Bitcoin keys use the secp256k1 (info on 2.7.1) parameters.
+                    // Public keys are generated by: Q=dG where Q is the public key, d is the private key, and G is a curve parameter.
+                    // A public key is a 65 byte long value consisting of a leading 0x04 and X and Y coordinates of 32 bytes each.
+                    // http://www.secg.org/collateral/sec2_final.pdf
+                    // aka: Q = alpha_point; d = hash_bigi; G = ec_options.G
+
+                    val alpha_point:ECPoint = ec_options.getG().multiply( hash_bigi )
+                    //println(ec_options.getG().toString())
+                    //println(ec_options.getG().normalize().affineXCoord.toString())
+                    //println(ec_options.getG().normalize().affineYCoord.toString())
+                    //println(ec_options.getG().normalize().rawXCoord.toString())
+                    //println(ec_options.getG().normalize().rawYCoord.toString())
+                    //println(ec_options.getG().normalize().xCoord.toString())
+                    //println(ec_options.getG().normalize().yCoord.toString())
+                    println("alpha_point.affineX:Y::'" + alpha_point.normalize().getXCoord().toString() + "':'" + alpha_point.normalize().getYCoord().toString() + "'")
+                    println("alpha_point.isOnCurve():'" + alpha_point.isValid().toString())
+
+                    // point multiply with random large value, assumed reduction by ec_options.p
+                    val alpha_mult:ECPoint = alpha_point.multiply( randomRho )
+                    //val testr:BigInteger = BigInteger("7830433108338161311672534626810729051862579494468904564511192911136080794165799472284225839193527826330")
+                    //println("testr:bitlength::'" + testr + "':'" + testr.bitLength() + "'")
+                    //randomRho = testr
+                    //val alpha_mult:ECPoint = alpha_point.multiply( testr )
+
+                    // get x,y pair after point multiplication as 32byte==256bit length strings
+                    //val alpha_x:ByteArray = alpha_mult.normalize().getXCoord().toBigInteger().toByteArray()
+                    //val alpha_y:ByteArray = alpha_mult.normalize().getYCoord().toBigInteger().toByteArray()
+                    val alpha_x:String = alpha_mult.normalize().getXCoord().toString()
+                    val alpha_y:String = alpha_mult.normalize().getYCoord().toString()
+
+                    //println("alpha_mult.affineX:Y::'" + String(Hex.encode(alpha_x)) + "':'" + String(Hex.encode(alpha_y)) + "'")
+                    println("alpha_mult.affineX:Y::'" + alpha_mult.normalize().getXCoord().toString() + "':'" + alpha_mult.normalize().getYCoord().toString() + "'")
+                    println("alpha_mult.isOnCurve():'" + alpha_mult.isValid().toString())
+
+                    // will send x,y pair to server for decoding
+                    //val alpha:String = String(Hex.encode(alpha_x)) + "," + String(Hex.encode(alpha_y))
+                    val alpha:String = alpha_x + "," + alpha_y
+
+                    // GENERATE UNIQUE USER ID TO ASSOCIATE EMAIL FOR GEOIP VIOLATION NOTIFICATIONS
+
+                    var user_identifier:String = _auth_user + _auth_domain
+
+                    // keyed hash of user_identifier into hex string
+                    val user_identifier_hmac_sha256_key:SecretKey = SecretKeySpec(_auth_offset.toString().toByteArray(), hmac_options_algorithm)
+                    val user_identifier_hmac_sha256:Mac = Mac.getInstance(hmac_options_algorithm, BouncyCastleProvider())
+
+                    user_identifier_hmac_sha256.init(user_identifier_hmac_sha256_key)
+                    user_identifier_hmac_sha256.update(user_identifier.toByteArray())
+
+                    val user_identifier_hmac_sha256_encrypted:ByteArray = user_identifier_hmac_sha256.doFinal()
+                    user_identifier = String(Hex.encode(user_identifier_hmac_sha256_encrypted))
+
+                    // SEND VALUES TO SERVER
+
+                    //val _setting_api_key_email:String? = sharedPrefs.getString(PreferenceKeys.OOPASS_API_KEY_EMAIL)
+
+                    println("Sending Alpha + User Identifier + User Email")
+                    println("Alpha:'" + alpha + "'::User Identifier:'" + user_identifier + "'::User Email:'" + _setting_api_key_email + "'")
+
+                    val request_data:String = alpha + "," + user_identifier + "," + _setting_api_key_email
+
+                    _socket?.send(request_data)
+                }
+
+                return
+            }
+        }
+
+        //val _setting_server_host:String? = sharedPrefs.getString(PreferenceKeys.OOPASS_SERVER_HOST)
+        //val _setting_server_port:String? = sharedPrefs.getString(PreferenceKeys.OOPASS_SERVER_PORT)
+        val _server_protocol:String = "wss"
+
+        val _socket_url:String? = _server_protocol + "://" + _setting_server_host + ":" + _setting_server_port
+
+        val wsFuture = AsyncHttpClient.getDefaultInstance().websocket(_socket_url, _server_protocol, handle_socket_connect)
+        _socket = wsFuture.get()
+
+        _socket.setClosedCallback(handle_socket_closed_ended)
+        _socket.setEndCallback(handle_socket_closed_ended)
+        _socket.setDataCallback(handle_socket_data_read)
+        _socket.setStringCallback(handle_socket_data)
+
+        // handle_socket_opened
+        _socket.send("__client_" + client_version + "_connected__")
     }
 
     fun deletePasswords(selectedItems: List<PasswordItem>) {

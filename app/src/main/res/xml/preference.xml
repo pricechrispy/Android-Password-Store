@@ -164,6 +164,39 @@
             app:title="@string/pref_copy_title" />
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/pref_category_title_oopass">
+        <EditTextPreference
+            android:inputType="textEmailAddress"
+            app:key="oopass_api_key_email"
+            app:summary="@string/pref_oopass_api_key_email_summary"
+            app:title="@string/pref_oopass_api_key_email_title" />
+        <EditTextPreference
+            app:key="oopass_server_host"
+            app:summary="@string/pref_oopass_server_host_summary"
+            app:title="@string/pref_oopass_server_host_title" />
+        <EditTextPreference
+            android:inputType="number"
+            app:defaultValue="51200"
+            app:key="oopass_server_port"
+            app:summary="@string/pref_oopass_server_port_summary"
+            app:title="@string/pref_oopass_server_port_title" />
+        <EditTextPreference
+            app:defaultValue="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz !&quot;#$%&amp;'()*+,-./:;&lt;=&gt;?@[\\]^_`{|}~"
+            app:key="oopass_requested_chars"
+            app:summary="@string/pref_oopass_requested_chars_summary"
+            app:title="@string/pref_oopass_requested_chars_title" />
+        <EditTextPreference
+            android:inputType="number"
+            app:defaultValue="16"
+            app:key="oopass_requested_length"
+            app:summary="@string/pref_oopass_requested_length_summary"
+            app:title="@string/pref_oopass_requested_length_title" />
+        <EditTextPreference
+            app:key="oopass_hmac_key"
+            app:summary="@string/pref_oopass_hmac_key_summary"
+            app:title="@string/pref_oopass_hmac_key_title" />
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/pref_misc_title">
         <Preference
             app:key="export_passwords"

@@ -156,6 +156,19 @@
     <string name="prefs_export_passwords_title">Export passwords</string>
     <string name="prefs_export_passwords_summary">Exports the encrypted passwords to an external directory</string>
     <string name="prefs_version">Version</string>
+    <string name="pref_category_title_oopass">OOPASS</string>
+    <string name="pref_oopass_api_key_email_title">Email for API</string>
+    <string name="pref_oopass_api_key_email_summary">Email for API abuse notifications</string>
+    <string name="pref_oopass_server_host_title">Server (HOST/IP)</string>
+    <string name="pref_oopass_server_host_summary">OOPASS server hostname or IP address</string>
+    <string name="pref_oopass_server_port_title">Server Port</string>
+    <string name="pref_oopass_server_port_summary">OOPASS server port</string>
+    <string name="pref_oopass_requested_chars_title">Desired Password Characters</string>
+    <string name="pref_oopass_requested_chars_summary">Possible characters used in all generated passwords</string>
+    <string name="pref_oopass_requested_length_title">Desired Password Length</string>
+    <string name="pref_oopass_requested_length_summary">Length of all generated passwords</string>
+    <string name="pref_oopass_hmac_key_title">HMAC key</string>
+    <string name="pref_oopass_hmac_key_summary">Change to migrate between devices: 32 bytes alphanumeric</string>
 
     <!-- PasswordGenerator fragment -->
     <string name="pwgen_title">Generate Password</string>
@@ -336,6 +349,15 @@
     <string name="git_operation_wrong_password">Wrong password</string>
     <string name="bottom_sheet_create_new_folder">Create new folder</string>
     <string name="bottom_sheet_create_new_password">Create new password</string>
+    <string name="bottom_sheet_oopass_info">Provide the information and tap &quot;Get Password&quot;</string>
+    <string name="bottom_sheet_oopass_title">OOPASS Password Manager</string>
+    <string name="bottom_sheet_oopass_get_password">Get Password</string>
+    <string name="bottom_sheet_oopass_mp_desc">Enter Master Password:</string>
+    <string name="bottom_sheet_oopass_mp_layout">Type here</string>
+    <string name="bottom_sheet_oopass_location_desc">Enter Location Phrase:</string>
+    <string name="bottom_sheet_oopass_location_layout">gmail.com</string>
+    <string name="bottom_sheet_oopass_user_desc">Enter Service User:</string>
+    <string name="bottom_sheet_oopass_user_layout">username</string>
     <string name="snackbar_action_grant">Grant</string>
     <string name="pref_debug_logging_summary">Enable debug logging (requires app restart)</string>
     <string name="pref_debug_logging_title">Debug logging</string>
