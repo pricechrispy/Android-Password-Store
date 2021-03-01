@@ -687,8 +687,8 @@ class PasswordStore : BaseGitActivity() {
 
                         //val rwd_x:ByteArray = rwd_point.normalize().getXCoord().toBigInteger().toByteArray()
                         //val rwd_y:ByteArray = rwd_point.normalize().getYCoord().toBigInteger().toByteArray()
-                        val rwd_x:String = rwd_point.normalize().getXCoord().toString()
-                        val rwd_y:String = rwd_point.normalize().getYCoord().toString()
+                        val rwd_x:String = rwd_point.normalize().getXCoord().toString().padStart(64, '0')
+                        val rwd_y:String = rwd_point.normalize().getYCoord().toString().padStart(64, '0')
 
                         //println("rwd_point.affineX:Y::'" + String(Hex.encode(rwd_x)) + "':'" + String(Hex.encode(rwd_y)) + "'")
                         println("rwd_point.affineX:Y::'" + rwd_x + "':'" + rwd_y + "'")
@@ -829,8 +829,8 @@ class PasswordStore : BaseGitActivity() {
                     // get x,y pair after point multiplication as 32byte==256bit length strings
                     //val alpha_x:ByteArray = alpha_mult.normalize().getXCoord().toBigInteger().toByteArray()
                     //val alpha_y:ByteArray = alpha_mult.normalize().getYCoord().toBigInteger().toByteArray()
-                    val alpha_x:String = alpha_mult.normalize().getXCoord().toString()
-                    val alpha_y:String = alpha_mult.normalize().getYCoord().toString()
+                    val alpha_x:String = alpha_mult.normalize().getXCoord().toString().padStart(64, '0')
+                    val alpha_y:String = alpha_mult.normalize().getYCoord().toString().padStart(64, '0')
 
                     //println("alpha_mult.affineX:Y::'" + String(Hex.encode(alpha_x)) + "':'" + String(Hex.encode(alpha_y)) + "'")
                     println("alpha_mult.affineX:Y::'" + alpha_mult.normalize().getXCoord().toString() + "':'" + alpha_mult.normalize().getYCoord().toString() + "'")
