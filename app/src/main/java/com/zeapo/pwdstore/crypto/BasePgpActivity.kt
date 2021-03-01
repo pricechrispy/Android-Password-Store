@@ -53,6 +53,11 @@ open class BasePgpActivity : AppCompatActivity(), OpenPgpServiceConnection.OnBou
     val fullPath: String by lazy(LazyThreadSafetyMode.NONE) { intent.getStringExtra("FILE_PATH") }
 
     /**
+     * OOPASS Data for clipboard
+     */
+    val oopassData: String by lazy(LazyThreadSafetyMode.NONE) { intent.getStringExtra("OOPASS_DATA") }
+
+    /**
      * Name of the password file
      *
      * Converts personal/auth.foo.org/john_doe@example.org.gpg to john_doe.example.org

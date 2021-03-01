@@ -133,6 +133,8 @@ dependencies {
         debugImplementation(Dependencies.ThirdParty.whatthestack)
     }
 
+    implementation(Dependencies.ThirdParty.androidasync)
+
     "nonFreeImplementation"(Dependencies.NonFree.google_play_auth_api_phone)
 
     // Testing-only dependencies
